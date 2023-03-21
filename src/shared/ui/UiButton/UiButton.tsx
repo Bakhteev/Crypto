@@ -11,7 +11,7 @@ const UiButton = ({
   ...meta
 }) => {
   return (
-    <>
+    <div className="flex flex-direction-column align-items-center">
       <button
         disabled={disabled}
         onClick={onClick}
@@ -20,9 +20,9 @@ const UiButton = ({
       >
         {children}
       </button>
-      {disabled && <p className="uiButton__error">{errorMessage}</p>}
+      {disabled && <p className="uiButton__error">{errorMessage}</p>}{' '}
       {/* FIXME: text align */}
-    </>
+    </div>
   )
 }
 
