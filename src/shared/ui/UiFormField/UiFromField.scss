@@ -1,0 +1,25 @@
+@import '@/styles/variables';
+
+.ui-form-field {
+  display: flex;
+  background: #f6f7f8;
+  border: 1px solid #e3ebef;
+  border-collapse: collapse;
+  border-radius: 5px;
+  padding: 10px 16px;
+  &__input {
+    background: transparent;
+    line-height: 23px;
+    font-weight: 400;
+    width: 100%;
+    font-size: 16px;
+  }
+  .ui-prefix + .ui-form-field__input {
+    border-left: 1px solid #e3ebef;
+    margin-left: 10px;
+  }
+
+  .ui-form-field__input + .ui-suffix {
+    border-left: 1px solid #e3ebef;
+  }
+}

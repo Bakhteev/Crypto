@@ -23,7 +23,7 @@ export default {
       control: { type: 'text' },
     },
   },
-} as ComponentMeta<typeof UiIcon>
+} as ComponentMeta<typeof UiButton>
 
 const Template: ComponentStory<typeof UiButton> = (args) => (
   <UiButton {...args} />
