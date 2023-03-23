@@ -1,6 +1,5 @@
 import React from 'react'
-import {ComponentStory, ComponentMeta} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
+import {ComponentMeta, ComponentStory} from '@storybook/react'
 import UiFormField from './UiFormField.js'
 
 export default {
@@ -21,7 +20,9 @@ export default {
 } as ComponentMeta<typeof UiFormField>
 
 const Template: ComponentStory<typeof UiFormField> = (args) => (
-    <UiFormField {...args}  />
+    <div style={{display: "grid"}}>
+      <UiFormField {...args}  />
+    </div>
 )
 
 export const Default = Template.bind({})
@@ -41,8 +42,6 @@ export const WithPrefix = Template.bind({})
 
 WithPrefix.args = {
   type: 'number',
-// @ts-ignore
-  //FIXME: type bug
   prefix: <p>prefix</p>,
 }
 

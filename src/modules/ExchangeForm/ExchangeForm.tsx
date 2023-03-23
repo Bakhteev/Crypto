@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {UiFormField, UiSearchField} from "@/shared/ui";
+import {UiFormField, UiSearchDropdown} from "@/shared/ui";
 import {ICurrency} from "@/models";
 import {CurrenciesMock} from "@/mock/Currencies.mock";
 import swap from '@/assets/icons/swap.svg'
-
+import "./ExchangeForm.scss"
 
 //FIXME: remove inline styles
 const ExchangeForm = () => {
@@ -22,30 +22,29 @@ const ExchangeForm = () => {
   }
 
   return (
-      <form className={"flex"}>
-          <div style={{position: "relative",  flex: 1}}>
-            <UiFormField
-                suffix={
-                  <UiSearchField
-                      onChange={onChange}
-                      onClick={getCurrencyFrom}
-                      currencies={CurrenciesMock}
-                      chosenCurrency={chosenCurrencyFrom}
-                  />
-                }
-            />
-          </div>
-          <img src={swap} alt="" style={{margin: "0 28px"}}/>
-          <div style={{position: "relative", flex: 1}}>
-            <UiFormField suffix={
-              <UiSearchField
-                  onChange={onChange}
-                  onClick={getCurrencyTo}
-                  currencies={CurrenciesMock}
-                  chosenCurrency={chosenCurrencyTo}/>}
-            />
-
-          </div>
+      <form className={"flex exchange-form align-items-center"}>
+        <div className={"exchange-form__block"}>
+          <UiFormField
+              suffix={
+                <UiSearchDropdown
+                    onChange={onChange}
+                    onClick={getCurrencyFrom}
+                    currencies={CurrenciesMock}
+                    chosenCurrency={chosenCurrencyFrom}
+                />
+              }
+          />
+        </div>
+        <img src={swap} alt="swap" className={"exchange-form__img"}/>
+        <div className={"exchange-form__block"}>
+          <UiFormField suffix={
+            <UiSearchDropdown
+                onChange={onChange}
+                onClick={getCurrencyTo}
+                currencies={CurrenciesMock}
+                chosenCurrency={chosenCurrencyTo}/>}
+          />
+        </div>
       </form>
   );
 };

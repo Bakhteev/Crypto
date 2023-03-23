@@ -1,6 +1,5 @@
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
+import {ComponentMeta, ComponentStory} from '@storybook/react'
 import UiButton from './UiButton'
 
 export default {
@@ -17,16 +16,16 @@ export default {
       },
     },
     children: {
-      control: { type: 'text' },
+      control: {type: 'text'},
     },
     errorMessage: {
-      control: { type: 'text' },
+      control: {type: 'text'},
     },
   },
 } as ComponentMeta<typeof UiButton>
 
 const Template: ComponentStory<typeof UiButton> = (args) => (
-  <UiButton {...args} />
+    <UiButton {...args} />
 )
 
 export const Default = Template.bind({})

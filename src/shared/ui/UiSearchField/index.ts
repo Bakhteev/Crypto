@@ -1,1 +1,1 @@
-export { default as UiSearchField } from './UiSearchField'
+export {default as UiSearchDropdown} from './UiSearchDropdown'

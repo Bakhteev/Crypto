@@ -1,6 +1,6 @@
 import React from 'react'
-import {ComponentStory, ComponentMeta} from '@storybook/react'
-import UiSearchField from './UiSearchField'
+import {ComponentMeta, ComponentStory} from '@storybook/react'
+import UiSearchField from './UiSearchDropdown'
 import {CurrenciesMock} from '@/mock/Currencies.mock'
 
 export default {

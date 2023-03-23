@@ -13,12 +13,12 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
                                                  }) => {
   const hasPrefix = !!prefix
   const hasSuffix = !!suffix
-  const classNames = cn(defaultClassname, className)
+  const classNames = cn(defaultClassname, className, "flex", "align-items-center")
   return (
       <label className={classNames}>
-        {hasPrefix && <div className='ui-prefix'>{prefix}</div>}
+        {hasPrefix && <div className='ui-form-field__prefix'>{prefix}</div>}
         <input type={type || 'text'} {...meta} className="ui-form-field__input"/>
-        {hasSuffix && <div className='ui-suffix'>{suffix}</div>}
+        {hasSuffix && <div className='ui-form-field__suffix'>{suffix}</div>}
       </label>
   )
 }

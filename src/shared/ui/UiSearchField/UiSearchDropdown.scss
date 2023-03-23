@@ -1,0 +1,52 @@
+//FIXME: to classes.scss
+
+.no-border-bottom-radius {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e3ebef !important;
+
+}
+
+.no-border {
+  border: none !important;
+}
+
+.ui-search-dropdown-closed {
+  cursor: pointer;
+
+  &__icon {
+    margin-left: 34px;
+  }
+
+  &__name {
+    margin: 0 29px 0 12px;
+  }
+}
+
+.ui-search-dropdown-opened {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  border: 1px solid #e3ebef;
+  border-radius: 5px;
+
+  .ui-form-field {
+    border: none;
+    border-bottom: 1px solid #e3ebef;
+  }
+
+  .ui-form-field__suffix {
+    border: none;
+  }
+
+  &__close-icon {
+    cursor: pointer;
+    padding: 5px;
+  }
+}
