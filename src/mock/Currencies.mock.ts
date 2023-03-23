@@ -1,4 +1,5 @@
-import { ICurrency } from '@/models/ICurrency'
+import { ICurrency } from '@/models/ICurrency';
+
 export const CurrenciesMock: ICurrency[] = [
   {
     ticker: 'btc',
@@ -12,7 +13,7 @@ export const CurrenciesMock: ICurrency[] = [
     network: 'btc',
     tokenContract: null,
     buy: true,
-    sell: true,
+    sell: true
   },
   {
     ticker: 'eth',
@@ -26,7 +27,7 @@ export const CurrenciesMock: ICurrency[] = [
     network: 'eth',
     tokenContract: null,
     buy: true,
-    sell: true,
+    sell: true
   },
   {
     ticker: 'usdt',
@@ -40,7 +41,7 @@ export const CurrenciesMock: ICurrency[] = [
     network: 'btc',
     tokenContract: '31',
     buy: true,
-    sell: true,
+    sell: true
   },
   {
     ticker: 'usdt',
@@ -54,6 +55,6 @@ export const CurrenciesMock: ICurrency[] = [
     network: 'eth',
     tokenContract: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     buy: true,
-    sell: true,
-  },
-]
+    sell: true
+  }
+];

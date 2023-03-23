@@ -1,7 +1,7 @@
-import React, {ButtonHTMLAttributes} from 'react'
-import './UiButton.scss'
+import React, { ButtonHTMLAttributes } from 'react';
+import './UiButton.scss';
 
-const defaultErrorMessage: string = 'This pair is disabled now'
+const defaultErrorMessage: string = 'This pair is disabled now';
 
 const UiButton: React.FC<UiButtonProps> = ({
                                              children,
@@ -11,24 +11,24 @@ const UiButton: React.FC<UiButtonProps> = ({
                                              ...meta
                                            }) => {
   return (
-      <div style={{position: 'relative', maxWidth: 'max-content'}}>
-        <button
-            disabled={disabled}
-            onClick={onClick}
-            {...meta}
-            className="uiButton"
-            style={{flexGrow: '0'}}
-        >
-          {children}
-        </button>
-        {disabled && (
-            <p className="UiButton-error">
-              {errorMessage ? errorMessage : defaultErrorMessage}
-            </p>
-        )}
-      </div>
-  )
-}
+    //FIXME: remove inline styles
+    <div style={{ position: 'relative', maxWidth: 'max-content' }}>
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        {...meta}
+        className='uiButton'
+      >
+        {children}
+      </button>
+      {disabled && (
+        <p className='UiButton-error'>
+          {errorMessage ? errorMessage : defaultErrorMessage}
+        </p>
+      )}
+    </div>
+  );
+};
 
 export type UiButtonProps = {
   children?: JSX.Element | string
@@ -37,4 +37,4 @@ export type UiButtonProps = {
   errorMessage?: string
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-export default UiButton
+export default UiButton;

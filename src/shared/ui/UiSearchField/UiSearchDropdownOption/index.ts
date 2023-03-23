@@ -1,1 +1,1 @@
-export {default as UiSearchDropdownOption} from './UiSearchDropdownOption'
+export { default as UiSearchDropdownOption } from './UiSearchDropdownOption';

@@ -1,1 +1,1 @@
-export {default as ExchangeFrom} from './ExchangeForm'
+export { default as ExchangeFrom } from './ExchangeForm';

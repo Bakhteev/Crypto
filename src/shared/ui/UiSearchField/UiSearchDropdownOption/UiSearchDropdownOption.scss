@@ -1,0 +1,27 @@
+@import "@/styles/variables";
+
+.ui-search-field-option {
+  padding: 14px 16px;
+  background: $lightGray;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: $lightBlue;
+  }
+
+  & __icon {
+  }
+
+  &__ticker {
+    margin: 0 16px 0 12px;
+    font-size: 16px;
+    line-height: 144%;
+  }
+
+  &__name {
+    font-size: 16px;
+    line-height: 144%;
+    color: #80A2B6;
+  }
+}

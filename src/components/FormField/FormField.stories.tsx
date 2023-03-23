@@ -1,7 +1,6 @@
-import React from "react";
-import {ComponentStory, ComponentMeta} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
-import FormField from "./FormField";
+import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import FormField from './FormField';
 
 export default {
   title: 'components/FormField',
@@ -17,17 +16,17 @@ export default {
     // value: {
     //   control: 'text',
     // },
-  },
-} as ComponentMeta<typeof FormField>
+  }
+} as ComponentMeta<typeof FormField>;
 
 const Template: ComponentStory<typeof FormField> = (args) => (
-    <div style={{position: "relative"}}>
-      <FormField/>
-    </div>
-)
+  <div style={{ position: 'relative' }}>
+    <FormField />
+  </div>
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 
 Default.args = {
-  type: 'number',
-}
+  type: 'number'
+};

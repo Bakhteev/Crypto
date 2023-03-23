@@ -1,6 +1,6 @@
-import React from 'react'
-import {ComponentMeta, ComponentStory} from '@storybook/react'
-import UiButton from './UiButton'
+import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import UiButton from './UiButton';
 
 export default {
   title: 'ui/UiButton',
@@ -8,39 +8,39 @@ export default {
   argTypes: {
     onClick: {
       description: '',
-      action: 'onClick',
+      action: 'onClick'
     },
     disabled: {
       control: {
-        type: 'boolean',
-      },
+        type: 'boolean'
+      }
     },
     children: {
-      control: {type: 'text'},
+      control: { type: 'text' }
     },
     errorMessage: {
-      control: {type: 'text'},
-    },
-  },
-} as ComponentMeta<typeof UiButton>
+      control: { type: 'text' }
+    }
+  }
+} as ComponentMeta<typeof UiButton>;
 
 const Template: ComponentStory<typeof UiButton> = (args) => (
-    <UiButton {...args} />
-)
+  <UiButton {...args} />
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 
 Default.args = {
-  children: 'Some text',
-}
+  children: 'Some text'
+};
 
-export const TextIsJsxElement = Template.bind({})
+export const TextIsJsxElement = Template.bind({});
 TextIsJsxElement.args = {
-  children: <span>Disabled</span>,
-}
+  children: <span>Disabled</span>
+};
 
-export const Disabled = Template.bind({})
+export const Disabled = Template.bind({});
 Disabled.args = {
   children: 'Disabled',
-  disabled: true,
-}
+  disabled: true
+};

@@ -1,1 +1,1 @@
-export { default as UiFormField } from './UiFormField'
+export { default as UiFormField } from './UiFormField';

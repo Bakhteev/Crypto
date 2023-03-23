@@ -1,6 +1,6 @@
-import React from 'react'
-import {ComponentMeta, ComponentStory} from '@storybook/react'
-import UiFormField from './UiFormField.js'
+import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import UiFormField from './UiFormField.js';
 
 export default {
   title: 'ui/UiFormField',
@@ -8,42 +8,42 @@ export default {
   argTypes: {
     onInput: {
       description: '',
-      action: 'onInput',
+      action: 'onInput'
     },
     type: {
-      control: {type: 'select'},
+      control: { type: 'select' }
     },
     value: {
-      control: 'text',
-    },
-  },
-} as ComponentMeta<typeof UiFormField>
+      control: 'text'
+    }
+  }
+} as ComponentMeta<typeof UiFormField>;
 
 const Template: ComponentStory<typeof UiFormField> = (args) => (
-    <div style={{display: "grid"}}>
-      <UiFormField {...args}  />
-    </div>
-)
+  <div style={{ display: 'grid' }}>
+    <UiFormField {...args} />
+  </div>
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 
 Default.args = {
-  type: 'number',
-}
+  type: 'number'
+};
 
-export const WithSuffix = Template.bind({})
+export const WithSuffix = Template.bind({});
 
 WithSuffix.args = {
   type: 'number',
-  suffix: <p>suffix</p>,
-}
+  suffix: <p>suffix</p>
+};
 
-export const WithPrefix = Template.bind({})
+export const WithPrefix = Template.bind({});
 
 WithPrefix.args = {
   type: 'number',
-  prefix: <p>prefix</p>,
-}
+  prefix: <p>prefix</p>
+};
 
 // export const TextIsJsxElement = Template.bind({})
 // TextIsJsxElement.args = {
