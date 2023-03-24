@@ -1,17 +1,17 @@
 import { baseApi } from '@/shared/api';
 import { ICurrency, IEstimatedExchangeAmount, IMinimalExchangeAmount } from '@/models';
 
-
+//TODO: destruct
 enum FlowTypes {
   STANDARD = 'standard',
   FIXED_RATE = 'fixed-rate'
 }
 
-interface ICurrencyParams {
-  active: boolean,
-  flow: FlowTypes,
-  buy: '',
-  sell: ''
+export interface IListOfAvailableCurrenciesParams {
+  active?: boolean,
+  flow?: FlowTypes,
+  buy?: string,
+  sell?: string
 }
 
 export interface IMinimalExchangeAmountParams {
@@ -22,7 +22,7 @@ export interface IMinimalExchangeAmountParams {
   flow?: FlowTypes
 }
 
-interface IEstimatedExchangeAmountParams {
+export interface IEstimatedExchangeAmountParams {
   fromCurrency: string;
   toCurrency: string;
   fromAmount: number; // must be > 0
@@ -36,12 +36,13 @@ interface IEstimatedExchangeAmountParams {
 
 export const exchangeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getListOfAvailableCurrencies: builder.query<ICurrency[], ICurrencyParams>({
-      query: (params: ICurrencyParams) => ({
+    getListOfAvailableCurrencies: builder.query<ICurrency[], IListOfAvailableCurrenciesParams>({
+      query: (params: IListOfAvailableCurrenciesParams) => ({
         url: '/currencies',
         method: 'GET',
         params
-      })
+      }),
+      providesTags: ['exchange']
     }),
     getMinAmount: builder.query<IMinimalExchangeAmount, IMinimalExchangeAmountParams>({
       query: (params: IMinimalExchangeAmountParams) => ({

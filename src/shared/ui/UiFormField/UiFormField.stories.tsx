@@ -20,9 +20,7 @@ export default {
 } as ComponentMeta<typeof UiFormField>;
 
 const Template: ComponentStory<typeof UiFormField> = (args) => (
-  <div style={{ display: 'grid' }}>
-    <UiFormField {...args} />
-  </div>
+  <UiFormField {...args} />
 );
 
 export const Default = Template.bind({});
@@ -43,6 +41,12 @@ export const WithPrefix = Template.bind({});
 WithPrefix.args = {
   type: 'number',
   prefix: <p>prefix</p>
+};
+
+export const WithError = Template.bind({});
+WithError.args = {
+  type: 'number',
+  error: true
 };
 
 // export const TextIsJsxElement = Template.bind({})

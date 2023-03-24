@@ -7,7 +7,7 @@ import close from '@/assets/icons/close.svg';
 import './UiSearchDropdown.scss';
 
 
-const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick }: UiSearchDropdownProps) => {
+const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick, value }: UiSearchDropdownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -41,6 +41,7 @@ const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick }: UiS
         <div ref={ref} className={'ui-search-dropdown-opened'}>
           <div>
             <UiFormField
+              value={value}
               onChange={onChange}
               placeholder={'Search...'}
               className={'no-border-bottom-radius border-bottom'}
@@ -57,9 +58,9 @@ const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick }: UiS
           </div>
           <div style={{ overflowY: 'auto', maxHeight: '250px' }}>
             {currencies.length &&
-              currencies.map((currency) =>
+              currencies.map((currency, index) =>
                 <UiSearchDropdownOption
-                  key={currency.name + currency.ticker}
+                  key={currency.name + currency.ticker + index}
                   currency={currency}
                   onClick={chooseOptionHandler}
                 />
@@ -75,7 +76,8 @@ export type UiSearchDropdownProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   currencies: ICurrency[]
   chosenCurrency: ICurrency
-  onClick: (e: MouseEvent, value: ICurrency) => void
+  onClick: (e: MouseEvent, value: ICurrency) => void,
+  value: string
 }
 
 export default UiSearchDropdown;

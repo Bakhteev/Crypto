@@ -9,11 +9,13 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
                                                    suffix,
                                                    OnChange,
                                                    className,
+                                                   error,
                                                    ...meta
                                                  }) => {
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
-  const classNames = cn(defaultClassname, className, 'flex', 'align-items-center');
+  const classNames = cn(defaultClassname, className, 'flex', 'align-items-center', { error }
+  );
   return (
     <label className={classNames}>
       {hasPrefix && <div className='ui-form-field__prefix'>{prefix}</div>}
@@ -23,11 +25,15 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
   );
 };
 
+// type customValue = Omit<InputHTMLAttributes<HTMLInputElement>, 'value'>;
+
 export type UiFormFieldProps = {
-  type?: UiFormFieldType
-  suffix?: string | JSX.Element
-  prefix?: JSX.Element | any
-  OnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  type?: UiFormFieldType;
+  suffix?: string | JSX.Element;
+  prefix?: JSX.Element | any;
+  OnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean;
+  value?: string | number
 } & InputHTMLAttributes<HTMLInputElement>
 
 type UiFormFieldType = 'text' | 'password' | 'number'

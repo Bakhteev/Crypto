@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '@/shared/api';
+import { exchangeSlice } from '@/modules';
 
 const rootReducer = combineReducers({
-  [baseApi.reducerPath]: baseApi.reducer
+  [baseApi.reducerPath]: baseApi.reducer,
+  exchange: exchangeSlice.reducer
 });
 
 export const setupStore = () => {

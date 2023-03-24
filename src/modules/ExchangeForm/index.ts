@@ -1,1 +1,2 @@
-export { default as ExchangeFrom } from './ExchangeForm';
+export { default as Search } from './ExchangeForm';
+export { exchangeSlice } from './redux';
