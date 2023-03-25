@@ -1,63 +1,42 @@
 import { baseApi } from '@/shared/api';
 import { ICurrency, IEstimatedExchangeAmount, IMinimalExchangeAmount } from '@/models';
-
-//TODO: destruct
-enum FlowTypes {
-  STANDARD = 'standard',
-  FIXED_RATE = 'fixed-rate'
-}
-
-export interface IListOfAvailableCurrenciesParams {
-  active?: boolean,
-  flow?: FlowTypes,
-  buy?: string,
-  sell?: string
-}
-
-export interface IMinimalExchangeAmountParams {
-  fromCurrency: string
-  toCurrency: string
-  fromNetwork?: string,
-  toNetwork?: string,
-  flow?: FlowTypes
-}
-
-export interface IEstimatedExchangeAmountParams {
-  fromCurrency: string;
-  toCurrency: string;
-  fromAmount: number; // must be > 0
-  toAmount: number; // must me > 0
-  fromNetwork?: string;
-  toNetwork?: string;
-  flow?: FlowTypes;
-  type?: string;
-  useRateId?: boolean;
-}
+import { BreakPoints } from './enums';
+import {
+  IEstimatedExchangeAmountRequest,
+  IListOfAvailableCurrenciesRequest,
+  IMinimalExchangeAmountRequest
+} from '@/modules/ExchangeForm/api/interfaces';
 
 export const exchangeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getListOfAvailableCurrencies: builder.query<ICurrency[], IListOfAvailableCurrenciesParams>({
-      query: (params: IListOfAvailableCurrenciesParams) => ({
-        url: '/currencies',
-        method: 'GET',
-        params
-      }),
-      providesTags: ['exchange']
-    }),
-    getMinAmount: builder.query<IMinimalExchangeAmount, IMinimalExchangeAmountParams>({
-      query: (params: IMinimalExchangeAmountParams) => ({
-        url: '/min-amount',
+    getListOfAvailableCurrencies: builder.query<ICurrency[], IListOfAvailableCurrenciesRequest>({
+      query: (params: IListOfAvailableCurrenciesRequest) => ({
+        url: BreakPoints.LIST_OF_AVAILABLE_CURRENCIES,
         method: 'GET',
         params
       })
     }),
-    getEstimatedAmount: builder.query<IEstimatedExchangeAmount, IEstimatedExchangeAmountParams>({
-      query: (params: IEstimatedExchangeAmountParams) => ({
-        url: '/estimated-amount',
+    getMinAmount: builder.query<IMinimalExchangeAmount, IMinimalExchangeAmountRequest>({
+      query: (params: IMinimalExchangeAmountRequest) => ({
+        url: BreakPoints.MINIMAL_EXCHANGE_AMOUNT,
+        method: 'GET',
+        params
+      })
+    }),
+    getEstimatedAmount: builder.query<IEstimatedExchangeAmount, IEstimatedExchangeAmountRequest>({
+      query: (params: IEstimatedExchangeAmountRequest) => ({
+        url: BreakPoints.ESTIMATED_EXCHANGE_AMOUNT,
         params
       })
     })
   })
 });
 
-export const { useGetListOfAvailableCurrenciesQuery, useGetMinAmountQuery, useGetEstimatedAmountQuery } = exchangeApi;
+export const {
+  useGetListOfAvailableCurrenciesQuery,
+  useLazyGetListOfAvailableCurrenciesQuery,
+  useLazyGetMinAmountQuery,
+  useGetMinAmountQuery,
+  useGetEstimatedAmountQuery,
+  usePrefetch
+} = exchangeApi;

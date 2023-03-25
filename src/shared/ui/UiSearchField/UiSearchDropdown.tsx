@@ -57,7 +57,8 @@ const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick, value
 
           </div>
           <div style={{ overflowY: 'auto', maxHeight: '250px' }}>
-            {currencies.length &&
+            {!currencies.length && 'Nothing'}
+            {
               currencies.map((currency, index) =>
                 <UiSearchDropdownOption
                   key={currency.name + currency.ticker + index}

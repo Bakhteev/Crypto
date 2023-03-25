@@ -1,6 +1,7 @@
 import React from 'react';
 import { UiFormField, UiSearchDropdown } from '@/shared/ui';
 import { ICurrency } from '@/models';
+import { UiLoader } from '@/shared/ui/UiLoader';
 
 
 const SearchFormField = ({
@@ -11,7 +12,8 @@ const SearchFormField = ({
                            onClick,
                            error,
                            amountValue,
-                           searchValue
+                           searchValue,
+                           loading
                          }: SearchFormFieldProps) => (
   <UiFormField
     type={'number'}
@@ -19,13 +21,18 @@ const SearchFormField = ({
     onChange={amountHandler}
     value={amountValue}
     suffix={
-      <UiSearchDropdown
-        value={searchValue}
-        chosenCurrency={chosenCurrency}
-        currencies={currencies}
-        onClick={onClick}
-        onChange={searchHandler}
-      />
+      <>
+        {
+          loading ? <UiLoader /> :
+            <UiSearchDropdown
+              value={searchValue}
+              chosenCurrency={chosenCurrency}
+              currencies={currencies}
+              onClick={onClick}
+              onChange={searchHandler}
+            />
+        }
+      </>
     }
   />
 );
@@ -40,6 +47,8 @@ export interface SearchFormFieldProps {
   error?: boolean,
   amountValue?: string;
   searchValue: string;
+
+  loading?: boolean
 }
 
 

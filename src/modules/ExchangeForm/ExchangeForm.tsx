@@ -1,109 +1,147 @@
-import React, { ChangeEvent, useState } from 'react';
-import { UiButton, UiFormField } from '@/shared/ui';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ICurrency } from '@/models';
-import { SearchFormField } from '@/components';
-import { useGetListOfAvailableCurrenciesQuery } from './api';
-import swap from '@/assets/icons/swap.svg';
+import { useGetListOfAvailableCurrenciesQuery, useLazyGetMinAmountQuery } from './api';
 import './ExchangeForm.scss';
-import {
-  getFilteredCurrenciesSelector,
-  getFromCurrencySelector,
-  getIsFilteredSelector,
-  getToCurrencySelector,
-  searchCurrency,
-  setCurrencies,
-  setFromCurrency,
-  setIsFiltered,
-  setToCurrency
-} from './redux';
-import { useDebounce } from '@/shared/hooks';
-import { useDispatch, useSelector } from 'react-redux';
+import { getFromCurrencySelector, getToCurrencySelector, setFromCurrency, setToCurrency } from './redux';
+import { useAppDispatch, useAppSelector, useDebounce } from '@/shared/hooks';
+import { UiButton, UiFormField } from '@/shared/ui';
+import { SearchFormField } from '@/components';
 import { UiLoader } from '@/shared/ui/UiLoader';
-
+import swap from '@/assets/icons/swap.svg';
 //FIXME: remove inline styles
-//TODO: fetch ony buy and only sell
+//FIXME: destruct ??
+//FIXME: add slice from min amount
+//TODO: add validation
+//TODO: error handing
 const ExchangeForm = () => {
 
-  const dispatch = useDispatch();
-  // const [chosenCurrencyFrom, setChosenCurrencyFrom] = useState<ICurrency>(CurrenciesMock[0]);
-  // const [chosenCurrencyTo, setChosenCurrencyTo] = useState<ICurrency>(CurrenciesMock[1]);
-  const [searchValue, setSearchValue] = useState<string>('');
-  const debouncedValue = useDebounce<string>(searchValue, 10);
+  const dispatch = useAppDispatch();
 
-  const { isLoading, isError, data, isSuccess, isUninitialized } = useGetListOfAvailableCurrenciesQuery({});
+  const [searchValueToBuy, setSearchValueToBuy] = useState<string>('');
+  const [searchValueToSell, setSearchValueToSell] = useState<string>('');
 
-  dispatch(setCurrencies(data!));
+  const [currenciesToBuy, setCurrenciesToBuy] = useState<ICurrency[]>([]);
+  const [currenciesToSell, setCurrenciesToSell] = useState<ICurrency[]>([]);
+
+  const [toAmount, setToAmount] = useState<number>();
+  const [fromAmount, setFromAmount] = useState<number>();
 
 
-  // const currency = useSelector(getCurrenciesSelector);
-  // if (!isError && !isLoading) {
+  const debouncedValueToBuy = useDebounce<string>(searchValueToBuy, 0);
+  const debouncedValueToSell = useDebounce<string>(searchValueToSell, 0);
 
-  // setFromCurrency(currency[0]);
-  // setToCurrency(currency[1]);
+  const fromCurrency = useAppSelector(getFromCurrencySelector);
+  const toCurrency = useAppSelector(getToCurrencySelector);
 
-  // }
-  //FIXME: add check
+  const {
+    isLoading: isLoadingToBuy,
+    isError: isErrorToBuy,
+    data: fetchedCurrenciesToBuy
+  } = useGetListOfAvailableCurrenciesQuery({
+    active: true,
+    buy: true
+  });
+  const {
+    isLoading: isLoadingToSell,
+    isError: isErrorToSell,
+    data: fetchedCurrenciesToSell
+  } = useGetListOfAvailableCurrenciesQuery({
+    active: true,
+    sell: true
+  });
 
-  const isFiltered = useSelector(getIsFilteredSelector);
-  const filteredData = useSelector(getFilteredCurrenciesSelector);
+  const [getMinAmountQuery, { data, isError, isLoading }] = useLazyGetMinAmountQuery();
 
-  const fromCurrency = useSelector(getFromCurrencySelector);
-  const toCurrency = useSelector(getToCurrencySelector);
-
-  const searchHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value.trim());
-    if (e.target.value !== '') {
-      dispatch(searchCurrency(debouncedValue));
-      dispatch(setIsFiltered(true));
-    } else {
-      dispatch(setIsFiltered(false));
-    }
+  const filter = (value: string, arr: ICurrency[]) => {
+    const pattern = new RegExp(value.toLowerCase());
+    return arr.filter(item =>
+      pattern.test(item.name.toLowerCase())
+      || pattern.test(item.ticker.toLowerCase())
+    );
   };
+
+
+  useEffect(() => {
+    if (fetchedCurrenciesToSell) {
+      setCurrenciesToSell(fetchedCurrenciesToSell);
+      dispatch(setToCurrency(fetchedCurrenciesToSell[0]));
+    }
+    if (fetchedCurrenciesToBuy) {
+      dispatch(setFromCurrency(fetchedCurrenciesToBuy[0]));
+      setCurrenciesToBuy(fetchedCurrenciesToBuy);
+    }
+  }, [fetchedCurrenciesToSell, fetchedCurrenciesToBuy]);
+
+
+  useEffect(() => {
+    if (debouncedValueToBuy) {
+      setCurrenciesToBuy(filter(debouncedValueToBuy.toLowerCase(), currenciesToBuy));
+    } else {
+      setCurrenciesToBuy(fetchedCurrenciesToBuy ?? []);
+    }
+    if (debouncedValueToSell) {
+      setCurrenciesToSell(filter(debouncedValueToSell.toLowerCase(), currenciesToSell));
+    } else {
+      setCurrenciesToSell(fetchedCurrenciesToSell ?? []);
+    }
+  }, [debouncedValueToBuy, debouncedValueToSell]);
+
+  useEffect(() => {
+    if (fromCurrency.ticker && fromCurrency.network && toCurrency.ticker && toCurrency.network) {
+      getMinAmountQuery({
+        fromCurrency: fromCurrency.ticker,
+        toCurrency: toCurrency.ticker,
+        toNetwork: toCurrency.network,
+        fromNetwork: fromCurrency.network
+      });
+      if (data) {
+        setFromAmount(data.minAmount);
+      }
+    }
+
+  }, [fromCurrency, toCurrency, data]);
+
 
   const amountHandler = (e: ChangeEvent<HTMLInputElement>) => {
 
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-  };
-
   const getCurrencyFrom = (e: React.MouseEvent, value: ICurrency) => {
     dispatch(setFromCurrency(value));
-    dispatch(setIsFiltered(false));
   };
   const getCurrencyTo = (e: React.MouseEvent, value: ICurrency) => {
     dispatch(setToCurrency(value));
-    dispatch(setIsFiltered(false));
   };
 
-  if (isLoading) return <UiLoader />;
+
+  if (isLoadingToBuy || isLoadingToSell) return <UiLoader />;
+
 
   return (
     <form className={'exchange-form'}>
       <div className='flex exchange-form__top align-items-center' style={{ flexWrap: 'wrap' }}>
-
         <div className={'exchange-form__block'}>
           <SearchFormField
-            searchHandler={searchHandler}
-            searchValue={searchValue}
+            searchHandler={(e) => setSearchValueToBuy(e.target.value.trim())}
+            searchValue={searchValueToBuy}
             amountHandler={amountHandler}
             onClick={getCurrencyFrom}
-            currencies={isFiltered ? filteredData : data!}
-            chosenCurrency={fromCurrency ? fromCurrency : data![0]}
+            currencies={currenciesToBuy}
+            chosenCurrency={fromCurrency}
+            amountValue={fromAmount?.toString() || '0.1'}
+            loading={isLoadingToBuy}
           />
         </div>
         <img src={swap} alt='swap' className={'exchange-form__img'} />
         <div className={'exchange-form__block'}>
           <SearchFormField
-            searchHandler={searchHandler}
-            searchValue={searchValue}
+            searchHandler={(e) => setSearchValueToSell(e.target.value.trim())}
+            searchValue={searchValueToSell}
             amountHandler={amountHandler}
-            // onChange={onChange}
             onClick={getCurrencyTo}
-            currencies={isFiltered ? filteredData : data!}
-            chosenCurrency={toCurrency ? toCurrency : data![1]}
-            // amountValue={"10"}
+            currencies={currenciesToSell}
+            chosenCurrency={toCurrency}
+            loading={isLoadingToSell}
           />
         </div>
       </div>
@@ -111,7 +149,9 @@ const ExchangeForm = () => {
         <span className={'exchange-form__address'}>Your Ethereum address</span>
         <div className='flex' style={{ gap: 32, flexWrap: 'wrap' }}>
           <UiFormField className='flex-1' />
-          <UiButton>Exchange</UiButton>
+          <UiButton>
+            Exchange
+          </UiButton>
         </div>
       </div>
     </form>
