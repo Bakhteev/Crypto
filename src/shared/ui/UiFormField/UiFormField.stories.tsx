@@ -49,13 +49,3 @@ WithError.args = {
   error: true
 };
 
-// export const TextIsJsxElement = Template.bind({})
-// TextIsJsxElement.args = {
-//   children: <span>Disabled</span>,
-// }
-
-// export const Disabled = Template.bind({})
-// Disabled.args = {
-//   children: 'Disabled',
-//   disabled: true,
-// }

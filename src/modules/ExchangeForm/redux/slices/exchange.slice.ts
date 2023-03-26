@@ -1,63 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICurrency } from '@/models';
 
-//TODO: add diff fields for buy and sell ??
 interface IExchangeState {
-  // currenciesToBuy: ICurrency[],
-  // currenciesToSell: ICurrency[],
-  fromCurrency: ICurrency,
-  toCurrency: ICurrency,
-  // isFiltered: boolean
+  fromCurrency: ICurrency | null,
+  toCurrency: ICurrency | null,
 }
 
-
 const exchangeState: IExchangeState = {
-  // currenciesToBuy: [],
-  // currenciesToSell: [],
-
-  // filteredCurrencies: [],
-  fromCurrency: {
-    ticker: '',
-    name: '',
-    image: '',
-    hasExternalId: false,
-    isFiat: false,
-    featured: false,
-    isStable: false,
-    supportsFixedRate: false,
-    network: '',
-    tokenContract: false,
-    buy: false,
-    sell: false
-  },
-  toCurrency: {
-    ticker: '',
-    name: '',
-    image: '',
-    hasExternalId: false,
-    isFiat: false,
-    featured: false,
-    isStable: false,
-    supportsFixedRate: false,
-    network: '',
-    tokenContract: false,
-    buy: false,
-    sell: false
-  }
-  // isFiltered: false
+  fromCurrency: null,
+  toCurrency: null
 };
 
 
 export const exchangeSlice = createSlice({
-  name: 'exchangeSlice',
+  name: 'exchange',
   initialState: exchangeState,
   reducers: {
-    // setCurrenciesToBuy: (state, { payload }: PayloadAction<ICurrency[]>) => {
-    //   state.currenciesToBuy = payload;
-    // },
-    // setCurrenciesToSell: (state, { payload }: PayloadAction<ICurrency[]>) => {
-    //   state.currenciesToSell = payload;
-    // },
     setFromCurrency: (state, { payload }: PayloadAction<ICurrency>) => {
       state.fromCurrency = payload;
     },
@@ -68,8 +26,6 @@ export const exchangeSlice = createSlice({
 });
 
 export const {
-  // setCurrenciesToBuy,
-  // setCurrenciesToSell,
   setToCurrency,
   setFromCurrency
 } = exchangeSlice.actions;

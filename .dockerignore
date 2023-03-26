@@ -1,0 +1,7 @@
+storybook-static
+.storybook
+.prettierrc.json
+node_modules
+.gitignore
+dist
+**/*.stories.tsx

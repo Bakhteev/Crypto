@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '@/shared/api';
 import { exchangeSlice } from '@/modules';
+import { globalLoadingSlice } from '@/store/slices/GlobalLoading.slice';
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
-  exchange: exchangeSlice.reducer
+  [exchangeSlice.name]: exchangeSlice.reducer,
+  [globalLoadingSlice.name]: globalLoadingSlice.reducer
 });
 
 export const setupStore = () => {

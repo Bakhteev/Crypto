@@ -5,7 +5,7 @@ import {
   IEstimatedExchangeAmountRequest,
   IListOfAvailableCurrenciesRequest,
   IMinimalExchangeAmountRequest
-} from '@/modules/ExchangeForm/api/interfaces';
+} from './interfaces';
 
 export const exchangeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,9 +34,6 @@ export const exchangeApi = baseApi.injectEndpoints({
 
 export const {
   useGetListOfAvailableCurrenciesQuery,
-  useLazyGetListOfAvailableCurrenciesQuery,
   useLazyGetMinAmountQuery,
-  useGetMinAmountQuery,
-  useGetEstimatedAmountQuery,
-  usePrefetch
+  useLazyGetEstimatedAmountQuery
 } = exchangeApi;

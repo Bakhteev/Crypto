@@ -8,8 +8,9 @@ const UiButton: React.FC<UiButtonProps> = ({
                                              children,
                                              onClick,
                                              disabled = false,
-                                             errorMessage = defaultErrorMessage,
+                                             errorMessage,
                                              className,
+                                             error,
                                              ...meta
                                            }) => {
   const classNames = cn(defaultClassName, className);
@@ -23,7 +24,7 @@ const UiButton: React.FC<UiButtonProps> = ({
       >
         {children}
       </button>
-      {disabled && (
+      {error && (
         <p className='ui-button__error'>
           {errorMessage ? errorMessage : defaultErrorMessage}
         </p>
@@ -36,7 +37,8 @@ export type UiButtonProps = {
   children?: JSX.Element | string
   onClick?: (e: React.MouseEvent) => void,
   disabled?: boolean,
-  errorMessage?: string
+  errorMessage?: string,
+  error?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 export default UiButton;

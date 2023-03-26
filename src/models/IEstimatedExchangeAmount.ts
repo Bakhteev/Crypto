@@ -5,10 +5,10 @@ export interface IEstimatedExchangeAmount {
   toNetwork: string;
   flow: string;
   type: string;
-  rateId: string;
-  validUntil: string;
-  transactionSpeedForecast: any;
-  warningMessage: any;
+  rateId: string | null;
+  validUntil: string | null;
+  transactionSpeedForecast: string | null;
+  warningMessage: string | null;
   fromAmount: number;
   toAmount: number;
 }

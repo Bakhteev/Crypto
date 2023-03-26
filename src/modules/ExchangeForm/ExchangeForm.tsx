@@ -1,18 +1,15 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ICurrency } from '@/models';
-import { useGetListOfAvailableCurrenciesQuery, useLazyGetMinAmountQuery } from './api';
+import { useGetListOfAvailableCurrenciesQuery, useLazyGetEstimatedAmountQuery, useLazyGetMinAmountQuery } from './api';
 import './ExchangeForm.scss';
 import { getFromCurrencySelector, getToCurrencySelector, setFromCurrency, setToCurrency } from './redux';
 import { useAppDispatch, useAppSelector, useDebounce } from '@/shared/hooks';
 import { UiButton, UiFormField } from '@/shared/ui';
 import { SearchFormField } from '@/components';
-import { UiLoader } from '@/shared/ui/UiLoader';
+//@ts-ignore ?? for docker
 import swap from '@/assets/icons/swap.svg';
-//FIXME: remove inline styles
-//FIXME: destruct ??
-//FIXME: add slice from min amount
-//TODO: add validation
-//TODO: error handing
+import { setIsLoading } from '@/store/slices/GlobalLoading.slice';
+
 const ExchangeForm = () => {
 
   const dispatch = useAppDispatch();
@@ -23,12 +20,14 @@ const ExchangeForm = () => {
   const [currenciesToBuy, setCurrenciesToBuy] = useState<ICurrency[]>([]);
   const [currenciesToSell, setCurrenciesToSell] = useState<ICurrency[]>([]);
 
-  const [toAmount, setToAmount] = useState<number>();
-  const [fromAmount, setFromAmount] = useState<number>();
+  const [toAmount, setToAmount] = useState<number | string>('');
+  const [fromAmount, setFromAmount] = useState<number | string>('');
+  const [address, setAddress] = useState('');
+  const [validationError, setValidationError] = useState(false);
 
-
-  const debouncedValueToBuy = useDebounce<string>(searchValueToBuy, 0);
-  const debouncedValueToSell = useDebounce<string>(searchValueToSell, 0);
+  const debouncedSearchToBuy = useDebounce<string>(searchValueToBuy, 100);
+  const debouncedSearchToSell = useDebounce<string>(searchValueToSell, 100);
+  const debouncedFromAmount = useDebounce<number | string>(fromAmount, 200);
 
   const fromCurrency = useAppSelector(getFromCurrencySelector);
   const toCurrency = useAppSelector(getToCurrencySelector);
@@ -50,7 +49,13 @@ const ExchangeForm = () => {
     sell: true
   });
 
-  const [getMinAmountQuery, { data, isError, isLoading }] = useLazyGetMinAmountQuery();
+  const [getMinAmountQuery, {
+    data: minAmount,
+    isError: isMinAmountError
+  }] = useLazyGetMinAmountQuery();
+
+  const [getEstimatedAmountQuery, { data: estimated, isError }] = useLazyGetEstimatedAmountQuery();
+
 
   const filter = (value: string, arr: ICurrency[]) => {
     const pattern = new RegExp(value.toLowerCase());
@@ -64,46 +69,91 @@ const ExchangeForm = () => {
   useEffect(() => {
     if (fetchedCurrenciesToSell) {
       setCurrenciesToSell(fetchedCurrenciesToSell);
-      dispatch(setToCurrency(fetchedCurrenciesToSell[0]));
     }
     if (fetchedCurrenciesToBuy) {
-      dispatch(setFromCurrency(fetchedCurrenciesToBuy[0]));
       setCurrenciesToBuy(fetchedCurrenciesToBuy);
     }
   }, [fetchedCurrenciesToSell, fetchedCurrenciesToBuy]);
 
 
   useEffect(() => {
-    if (debouncedValueToBuy) {
-      setCurrenciesToBuy(filter(debouncedValueToBuy.toLowerCase(), currenciesToBuy));
+    if (debouncedSearchToBuy) {
+      setCurrenciesToBuy(filter(debouncedSearchToBuy.toLowerCase(), currenciesToBuy));
     } else {
       setCurrenciesToBuy(fetchedCurrenciesToBuy ?? []);
     }
-    if (debouncedValueToSell) {
-      setCurrenciesToSell(filter(debouncedValueToSell.toLowerCase(), currenciesToSell));
+    if (debouncedSearchToSell) {
+      setCurrenciesToSell(filter(debouncedSearchToSell.toLowerCase(), currenciesToSell));
     } else {
       setCurrenciesToSell(fetchedCurrenciesToSell ?? []);
     }
-  }, [debouncedValueToBuy, debouncedValueToSell]);
+  }, [debouncedSearchToBuy, debouncedSearchToSell]);
 
   useEffect(() => {
-    if (fromCurrency.ticker && fromCurrency.network && toCurrency.ticker && toCurrency.network) {
+    if (fromCurrency && toCurrency) {
       getMinAmountQuery({
         fromCurrency: fromCurrency.ticker,
         toCurrency: toCurrency.ticker,
         toNetwork: toCurrency.network,
         fromNetwork: fromCurrency.network
       });
-      if (data) {
-        setFromAmount(data.minAmount);
-      }
+      dispatch(setIsLoading(true));
     }
 
-  }, [fromCurrency, toCurrency, data]);
+  }, [fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    if (fromCurrency && toCurrency && +debouncedFromAmount >= minAmount!.minAmount) {
+      getEstimatedAmountQuery({
+        fromCurrency: fromCurrency.ticker,
+        toCurrency: toCurrency.ticker,
+        toNetwork: toCurrency.network,
+        fromNetwork: fromCurrency.network,
+        fromAmount: debouncedFromAmount,
+        toAmount: ''
+      });
+      dispatch(setIsLoading(true));
+    }
+  }, [debouncedFromAmount]);
 
 
-  const amountHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (minAmount) {
+      setFromAmount(minAmount.minAmount);
+      getEstimatedAmountQuery({
+        fromCurrency: fromCurrency!.ticker,
+        toCurrency: toCurrency!.ticker,
+        toNetwork: toCurrency!.network,
+        fromNetwork: fromCurrency!.network,
+        fromAmount: minAmount.minAmount,
+        toAmount: ''
+      });
+    }
+  }, [minAmount]);
 
+  useEffect(() => {
+    if (estimated) {
+      setToAmount(estimated.toAmount);
+      setFromAmount(estimated.fromAmount);
+      dispatch(setIsLoading(false));
+    }
+  }, [estimated]);
+
+
+  const amountHandlerFrom = (e: ChangeEvent<HTMLInputElement>, value: number) => {
+
+    if (value < minAmount!.minAmount) {
+      setToAmount('-----------');
+    } else {
+      setToAmount(estimated!.toAmount);
+    }
+
+    setFromAmount(value);
+    if (value <= 0) {
+      setValidationError(true);
+    } else {
+      setValidationError(false);
+    }
   };
 
   const getCurrencyFrom = (e: React.MouseEvent, value: ICurrency) => {
@@ -113,23 +163,29 @@ const ExchangeForm = () => {
     dispatch(setToCurrency(value));
   };
 
+  const handleAddress = (e: ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value);
+  };
 
-  if (isLoadingToBuy || isLoadingToSell) return <UiLoader />;
-
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    alert('Successfully exchanged');
+  };
 
   return (
-    <form className={'exchange-form'}>
-      <div className='flex exchange-form__top align-items-center' style={{ flexWrap: 'wrap' }}>
+    <form onSubmit={onSubmit} className={'exchange-form'}>
+      <div className='exchange-form__top'>
         <div className={'exchange-form__block'}>
           <SearchFormField
             searchHandler={(e) => setSearchValueToBuy(e.target.value.trim())}
             searchValue={searchValueToBuy}
-            amountHandler={amountHandler}
+            amountHandler={amountHandlerFrom}
             onClick={getCurrencyFrom}
             currencies={currenciesToBuy}
-            chosenCurrency={fromCurrency}
-            amountValue={fromAmount?.toString() || '0.1'}
+            chosenCurrency={fromCurrency!}
+            amountValue={fromAmount?.toString() || ''}
             loading={isLoadingToBuy}
+            error={validationError}
           />
         </div>
         <img src={swap} alt='swap' className={'exchange-form__img'} />
@@ -137,19 +193,28 @@ const ExchangeForm = () => {
           <SearchFormField
             searchHandler={(e) => setSearchValueToSell(e.target.value.trim())}
             searchValue={searchValueToSell}
-            amountHandler={amountHandler}
             onClick={getCurrencyTo}
             currencies={currenciesToSell}
-            chosenCurrency={toCurrency}
+            chosenCurrency={toCurrency!}
             loading={isLoadingToSell}
+            amountValue={toAmount?.toString() || ''}
+            disabled={true}
           />
         </div>
       </div>
       <div className='exchange-form__bottom'>
         <span className={'exchange-form__address'}>Your Ethereum address</span>
-        <div className='flex' style={{ gap: 32, flexWrap: 'wrap' }}>
-          <UiFormField className='flex-1' />
-          <UiButton>
+        <div className='flex'>
+          <UiFormField
+            className='flex-1'
+            onChange={handleAddress}
+            value={address}
+            required
+          />
+          <UiButton
+            disabled={isLoadingToSell && isLoadingToBuy || !estimated || !minAmount}
+            error={!estimated || !minAmount}
+          >
             Exchange
           </UiButton>
         </div>

@@ -8,6 +8,15 @@
   &__name {
     margin: 0 29px 0 12px;
   }
+
+  &__text {
+    white-space: nowrap;
+    margin-left: 10px;
+    @media screen and (max-width: 350px) {
+      margin-left: 5px;
+      font-size: 10px;
+    }
+  }
 }
 
 .ui-search-dropdown-opened {

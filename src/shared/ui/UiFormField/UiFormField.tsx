@@ -7,7 +7,7 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
                                                    type,
                                                    prefix,
                                                    suffix,
-                                                   OnChange,
+                                                   onChange,
                                                    className,
                                                    error,
                                                    ...meta
@@ -19,19 +19,17 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
   return (
     <label className={classNames}>
       {hasPrefix && <div className='ui-form-field__prefix'>{prefix}</div>}
-      <input type={type || 'text'} {...meta} className='ui-form-field__input' />
+      <input type={type || 'text'} {...meta} className='ui-form-field__input' onChange={onChange} />
       {hasSuffix && <div className='ui-form-field__suffix'>{suffix}</div>}
     </label>
   );
 };
 
-// type customValue = Omit<InputHTMLAttributes<HTMLInputElement>, 'value'>;
-
 export type UiFormFieldProps = {
   type?: UiFormFieldType;
   suffix?: string | JSX.Element;
   prefix?: JSX.Element | any;
-  OnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
   value?: string | number
 } & InputHTMLAttributes<HTMLInputElement>

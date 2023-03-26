@@ -1,0 +1,41 @@
+.main {
+  display: flex;
+  max-width: 1000px;
+  height: 100vh;
+  margin: 0 auto;
+  align-items: center;
+
+  &__loader-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+
+  &__title {
+    font-weight: 300;
+    font-size: 50px;
+    line-height: 120%;
+    @media screen and (max-width: 400px) {
+      font-size: 30px;
+    }
+  }
+
+  &__sub-title {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 100%;
+    margin: 16px 0 60px;
+    @media screen and (max-width: 400px) {
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    padding: 0 16px;
+  }
+}

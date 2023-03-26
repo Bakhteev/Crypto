@@ -5,7 +5,8 @@
   }
 
   &__img {
-    margin: 0 28px
+    margin: 0 28px;
+    max-width: 24px;
   }
 
   &__bottom {
@@ -15,5 +16,47 @@
   &__address {
     line-height: 144%;
     margin-bottom: 8px;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__bottom {
+    div.flex {
+      gap: 32px;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    &__top {
+      //display: block;
+      align-items: inherit;
+      flex-direction: column;
+    }
+
+    &__img {
+      align-self: flex-end;
+      margin: 16px 0;
+      transform: rotate(90deg);
+    }
+
+    &__bottom {
+      div.flex {
+        flex-direction: column;
+        gap: 16px;
+
+        .ui-button {
+          width: 100%;
+          max-width: inherit;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
   }
 }
