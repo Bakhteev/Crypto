@@ -1,6 +1,6 @@
-import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import UiFormField from './UiFormField.js';
+import React from 'react'
+import { type ComponentMeta, type ComponentStory } from '@storybook/react'
+import UiFormField from './UiFormField.js'
 
 export default {
   title: 'ui/UiFormField',
@@ -17,35 +17,34 @@ export default {
       control: 'text'
     }
   }
-} as ComponentMeta<typeof UiFormField>;
+} as ComponentMeta<typeof UiFormField>
 
 const Template: ComponentStory<typeof UiFormField> = (args) => (
   <UiFormField {...args} />
-);
+)
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 
 Default.args = {
   type: 'number'
-};
+}
 
-export const WithSuffix = Template.bind({});
+export const WithSuffix = Template.bind({})
 
 WithSuffix.args = {
   type: 'number',
   suffix: <p>suffix</p>
-};
+}
 
-export const WithPrefix = Template.bind({});
+export const WithPrefix = Template.bind({})
 
 WithPrefix.args = {
   type: 'number',
   prefix: <p>prefix</p>
-};
+}
 
-export const WithError = Template.bind({});
+export const WithError = Template.bind({})
 WithError.args = {
   type: 'number',
   error: true
-};
-
+}

@@ -1,4 +1,4 @@
-import { IMinimalExchangeAmount } from '@/models';
+import { type IMinimalExchangeAmount } from '@/models'
 
 export const MinimalExchangeAmountMock: IMinimalExchangeAmount = {
   fromCurrency: 'btc',
@@ -7,4 +7,4 @@ export const MinimalExchangeAmountMock: IMinimalExchangeAmount = {
   toNetwork: 'eth',
   flow: 'standard',
   minAmount: 0.0002787
-};
+}

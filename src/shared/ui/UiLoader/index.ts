@@ -1,1 +1,1 @@
-export { default as UiLoader } from './UiLoader';
+export { default as UiLoader } from './UiLoader'

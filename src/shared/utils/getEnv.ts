@@ -1,4 +1,4 @@
 export const getEnv = (envName: string) => {
-  //@ts-ignore ?? for docker
-  return import.meta.env[envName];
-};
+  // @ts-expect-error ?? for docker
+  return import.meta.env[envName]
+}

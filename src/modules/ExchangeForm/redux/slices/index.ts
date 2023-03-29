@@ -1,1 +1,1 @@
-export * from './exchange.slice';
+export * from './exchange.slice'

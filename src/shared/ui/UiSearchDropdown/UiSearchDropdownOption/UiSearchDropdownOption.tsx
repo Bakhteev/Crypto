@@ -1,9 +1,9 @@
-import React, { MouseEvent } from 'react';
-import { ICurrency } from '@/models';
-import './UiSearchDropdownOption.scss';
+import React, { type MouseEvent } from 'react'
+import { type ICurrency } from '@/models'
+import './UiSearchDropdownOption.scss'
 
 const UiSearchDropdownOption = ({ currency, onClick }: UiSearchDropdownOptionProps) => {
-  const { ticker, name, image } = currency;
+  const { ticker, name, image } = currency
   return (
     <div
       onClick={onClick(currency)}
@@ -21,11 +21,11 @@ const UiSearchDropdownOption = ({ currency, onClick }: UiSearchDropdownOptionPro
           {name}
         </span>
     </div>
-  );
-};
+  )
+}
 
-export type UiSearchDropdownOptionProps = {
+export interface UiSearchDropdownOptionProps {
   onClick: (value: ICurrency) => (e: MouseEvent) => void
   currency: ICurrency
 }
-export default UiSearchDropdownOption;
+export default UiSearchDropdownOption

@@ -1,4 +1,4 @@
-import { ICurrency } from '@/models/ICurrency';
+import { type ICurrency } from '@/models/ICurrency'
 
 export const CurrenciesMock: ICurrency[] = [
   {
@@ -57,4 +57,4 @@ export const CurrenciesMock: ICurrency[] = [
     buy: true,
     sell: true
   }
-];
+]

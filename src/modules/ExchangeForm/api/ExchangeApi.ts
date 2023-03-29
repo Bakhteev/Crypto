@@ -1,11 +1,11 @@
-import { baseApi } from '@/shared/api';
-import { ICurrency, IEstimatedExchangeAmount, IMinimalExchangeAmount } from '@/models';
-import { BreakPoints } from './enums';
+import { baseApi } from '@/shared/api'
+import { type ICurrency, type IEstimatedExchangeAmount, type IMinimalExchangeAmount } from '@/models'
+import { BreakPoints } from './enums'
 import {
-  IEstimatedExchangeAmountRequest,
-  IListOfAvailableCurrenciesRequest,
-  IMinimalExchangeAmountRequest
-} from './interfaces';
+  type IEstimatedExchangeAmountRequest,
+  type IListOfAvailableCurrenciesRequest,
+  type IMinimalExchangeAmountRequest
+} from './interfaces'
 
 export const exchangeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,10 +30,10 @@ export const exchangeApi = baseApi.injectEndpoints({
       })
     })
   })
-});
+})
 
 export const {
   useGetListOfAvailableCurrenciesQuery,
   useLazyGetMinAmountQuery,
   useLazyGetEstimatedAmountQuery
-} = exchangeApi;
+} = exchangeApi

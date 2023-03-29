@@ -1,2 +1,2 @@
-export * from './redux';
-export { default as useDebounce } from './useDebounce';
+export * from './redux'
+export { default as useDebounce } from './useDebounce'

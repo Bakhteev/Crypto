@@ -1,6 +1,6 @@
-import React from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import MainPage from '../pages/MainPage/MainPage';
+import React from 'react'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import MainPage from '../pages/MainPage/MainPage'
 
 export const MainRouter = createBrowserRouter([
   {
@@ -11,4 +11,4 @@ export const MainRouter = createBrowserRouter([
     path: '*',
     element: <Navigate to={'/'} />
   }
-]);
+])

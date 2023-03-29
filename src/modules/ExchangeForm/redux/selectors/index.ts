@@ -1,1 +1,1 @@
-export * from './exchange.selectors';
+export * from './exchange.selectors'

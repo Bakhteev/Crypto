@@ -1,11 +1,11 @@
-import React from 'react';
-import ExchangeForm from '@/modules/ExchangeForm/ExchangeForm';
-import { useAppSelector } from '@/shared/hooks';
-import { UiLoader } from '@/shared/ui/UiLoader';
-import './MainPage.scss';
+import React from 'react'
+import ExchangeForm from '@/modules/ExchangeForm/ExchangeForm'
+import { useAppSelector } from '@/shared/hooks'
+import { UiLoader } from '@/shared/ui/UiLoader'
+import './MainPage.scss'
 
 const MainPage = () => {
-  const isLoading = useAppSelector(state => state.GlobalLoading.isLoading);
+  const isLoading = useAppSelector(state => state.GlobalLoading.isLoading)
   return (
     <main className={'main'}>
       {
@@ -24,7 +24,7 @@ const MainPage = () => {
         </div>
       }
     </main>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

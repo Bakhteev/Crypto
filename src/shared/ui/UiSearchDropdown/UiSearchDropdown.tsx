@@ -1,25 +1,33 @@
-import React, { MouseEvent, useState } from 'react';
-import { ICurrency } from '@/models';
-import { UiFormField } from '../UiFormField';
-import { UiSearchDropdownOption } from './UiSearchDropdownOption';
-//@ts-ignore ?? for docker
-import arrow from '@/assets/icons/arrow.svg';
-//@ts-ignore ?? for docker
-import close from '@/assets/icons/close.svg';
-import './UiSearchDropdown.scss';
+import React, { type MouseEvent, useEffect, useState } from 'react'
+import { type ICurrency } from '@/models'
+import { UiFormField } from '../UiFormField'
+import { UiSearchDropdownOption } from './UiSearchDropdownOption'
+// @ts-expect-error ?? for docker
+import arrow from '@/assets/icons/arrow.svg'
+// @ts-expect-error ?? for docker
+import close from '@/assets/icons/close.svg'
+import './UiSearchDropdown.scss'
 
+const UiSearchDropdown = ({
+  onChange,
+  currencies,
+  chosenCurrency,
+  onClick,
+  value
+}: UiSearchDropdownProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const clickOpenHandler = () => {
+    setIsOpen((prev) => !prev)
+  }
 
-const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick, value }: UiSearchDropdownProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const clickOpenHandler = () => setIsOpen((prev) => !prev);
-
+  useEffect(() => {
+  }, [])
   const chooseOptionHandler = (value: ICurrency) => {
     return (e: MouseEvent) => {
-      clickOpenHandler();
-      onClick(e, value);
-    };
-  };
+      clickOpenHandler()
+      onClick(e, value)
+    }
+  }
 
   return (
     <>
@@ -27,17 +35,24 @@ const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick, value
         onClick={clickOpenHandler}
         className={'flex align-items-center ui-search-dropdown-closed'}
       >
-        {!chosenCurrency ?
-          <span className={'ui-search-dropdown-closed__text'}>Choose currency</span> : <>
-            <img
-              src={chosenCurrency.image}
-              alt='icon'
-              className={'ui-search-dropdown-closed__icon'}
-            />
-            <span className={'ui-search-dropdown-closed__name'}>
-        {chosenCurrency.ticker}
+        {(chosenCurrency == null)
+          ? (
+            <span className={'ui-search-dropdown-closed__text'}>
+            Choose currency
           </span>
-          </>}
+            )
+          : (
+            <>
+              <img
+                src={chosenCurrency.image}
+                alt={chosenCurrency.ticker}
+                className={'ui-search-dropdown-closed__icon'}
+              />
+              <span className={'ui-search-dropdown-closed__name'}>
+              {chosenCurrency.ticker}
+            </span>
+            </>
+            )}
         <img src={arrow} alt='open' />
       </div>
 
@@ -60,31 +75,32 @@ const UiSearchDropdown = ({ onChange, currencies, chosenCurrency, onClick, value
               />
             }
           />
-
         </div>
-        <div style={{ overflowY: 'auto', maxHeight: '250px' }}>
-          {!currencies.length && 'Nothing'}
-          {
-            currencies.map((currency, index) =>
-              <UiSearchDropdownOption
-                key={currency.name + currency.ticker + index}
-                currency={currency}
-                onClick={chooseOptionHandler}
-              />
-            )}
+        <div
+          onClick={clickOpenHandler}
+          className={'ui-search-dropdown-opened__backdrop'}
+        ></div>
+        <div className={'ui-search-dropdown-opened__options-container'}>
+          {(currencies.length === 0) && 'Nothing'}
+          {currencies.map((currency, index) => (
+            <UiSearchDropdownOption
+              key={`${currency.name}${currency.ticker}${index}`}
+              currency={currency}
+              onClick={chooseOptionHandler}
+            />
+          ))}
         </div>
       </div>
-
     </>
-  );
-};
+  )
+}
 
-export type UiSearchDropdownProps = {
+export interface UiSearchDropdownProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   currencies: ICurrency[]
   chosenCurrency: ICurrency | null
-  onClick: (e: MouseEvent, value: ICurrency) => void,
+  onClick: (e: MouseEvent, value: ICurrency) => void
   value: string
 }
 
-export default UiSearchDropdown;
+export default UiSearchDropdown
