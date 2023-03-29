@@ -30,6 +30,7 @@ const SearchFormField = ({
     <UiFormField
       type={'text'}
       error={error}
+      required
       onChange={changeHandler}
       value={amountValue}
       disabled={disabled}

@@ -3,7 +3,7 @@ import cn from 'classnames'
 import './UiFromField.scss'
 
 const defaultClassname = 'ui-form-field'
-const UiFormField: React.FC<UiFormFieldProps> = ({
+const UiFormField = ({
   type,
   prefix,
   suffix,
@@ -11,7 +11,7 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
   className,
   error,
   ...meta
-}) => {
+}: UiFormFieldProps) => {
   const hasPrefix = !!prefix
   const hasSuffix = !!suffix
   const classNames = cn(defaultClassname, className, 'flex', 'align-items-center', { error }
@@ -27,12 +27,12 @@ const UiFormField: React.FC<UiFormFieldProps> = ({
 
 export type UiFormFieldProps = {
   type?: UiFormFieldType
+  prefix?: string | JSX.Element
   suffix?: string | JSX.Element
-  prefix?: JSX.Element | string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error?: boolean
   value?: string | number
-} & InputHTMLAttributes<HTMLInputElement>
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'>
 
 type UiFormFieldType = 'text' | 'password' | 'number'
 

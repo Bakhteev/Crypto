@@ -29,18 +29,17 @@ Default.args = {
   type: 'number'
 }
 
-export const WithSuffix = Template.bind({})
-
-WithSuffix.args = {
-  type: 'number',
-  suffix: <p>suffix</p>
-}
-
 export const WithPrefix = Template.bind({})
 
 WithPrefix.args = {
   type: 'number',
   prefix: <p>prefix</p>
+}
+export const WithSuffix = Template.bind({})
+
+WithSuffix.args = {
+  type: 'number',
+  suffix: <p>suffix</p>
 }
 
 export const WithError = Template.bind({})

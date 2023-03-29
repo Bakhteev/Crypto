@@ -30,16 +30,15 @@ const ExchangeForm = (): JSX.Element => {
   const [validationError, setValidationError] = useState(false)
   const [validationErrorMessage, setValidationErrorMessage] = useState('')
 
-  const debouncedSearchToBuy = useDebounce<string>(searchValueToBuy, 100)
-  const debouncedSearchToSell = useDebounce<string>(searchValueToSell, 100)
-  const debouncedFromAmount = useDebounce<number | string>(fromAmount, 100)
+  const debouncedSearchToBuy = useDebounce<string>(searchValueToBuy, 200)
+  const debouncedSearchToSell = useDebounce<string>(searchValueToSell, 200)
+  const debouncedFromAmount = useDebounce<number | string>(fromAmount, 500)
 
   const fromCurrency = useAppSelector(getFromCurrencySelector)
   const toCurrency = useAppSelector(getToCurrencySelector)
 
   const {
     isLoading: isLoadingToBuy,
-    // isError: isErrorToBuy,
     data: fetchedCurrenciesToBuy
   } = useGetListOfAvailableCurrenciesQuery({
     active: true,
@@ -47,7 +46,6 @@ const ExchangeForm = (): JSX.Element => {
   })
   const {
     isLoading: isLoadingToSell,
-    // isError: isErrorToSell,
     data: fetchedCurrenciesToSell
   } = useGetListOfAvailableCurrenciesQuery({
     active: true,
@@ -57,13 +55,10 @@ const ExchangeForm = (): JSX.Element => {
   const [getMinAmountQuery, { data: minAmount, isError: isMinAmountError }] =
     useLazyGetMinAmountQuery()
 
-  const [getEstimatedAmountQuery, { data: estimated, isError }] =
+  const [getEstimatedAmountQuery, { data: estimated, isError: isEstimatedError }] =
     useLazyGetEstimatedAmountQuery()
 
   const filter = (value: string, arr: ICurrency[]): ICurrency[] => {
-    if (value.match(/\w/) == null) {
-      return []
-    }
     const pattern = new RegExp(value.toLowerCase())
     return arr.filter(
       (item) =>
@@ -134,6 +129,7 @@ const ExchangeForm = (): JSX.Element => {
   useEffect(() => {
     if ((minAmount != null) && !isMinAmountError && fromCurrency && toCurrency) {
       setFromAmount(minAmount.minAmount)
+      if (validationError) setValidationError(false)
       getEstimatedAmountQuery({
         fromCurrency: fromCurrency.ticker,
         toCurrency: toCurrency.ticker,
@@ -150,24 +146,22 @@ const ExchangeForm = (): JSX.Element => {
   }, [minAmount, isMinAmountError])
 
   useEffect(() => {
-    if ((estimated != null) && !isError) {
+    if ((estimated != null) && !isEstimatedError) {
       setToAmount(estimated.toAmount)
       setFromAmount(estimated.fromAmount)
       dispatch(setIsLoading(false))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [estimated, isError])
+  }, [estimated, isEstimatedError])
 
   const amountHandlerFrom = (
     e: ChangeEvent<HTMLInputElement>,
     value: string
   ) => {
-    // todo: remove dot in the end
-    console.log(+value.lastIndexOf('.'))
     setFromAmount(value)
-    if ((minAmount != null) && estimated && !Number.isNaN(+value)) {
-      setValidationError(true)
+    setValidationError(false)
+    if (minAmount && estimated && !Number.isNaN(+value)) {
       if (+value < minAmount.minAmount) {
         setToAmount('-----------')
         setValidationErrorMessage(`Minimal price is ${minAmount.minAmount}`)
@@ -181,7 +175,8 @@ const ExchangeForm = (): JSX.Element => {
         setValidationError(false)
       }
     } else {
-      setValidationError(false)
+      setValidationError(true)
+      setValidationErrorMessage(!minAmount ? 'Choose currency' : 'Wrong price format')
     }
   }
 
@@ -249,11 +244,11 @@ const ExchangeForm = (): JSX.Element => {
           <UiButton
             disabled={
               (isLoadingToSell && isLoadingToBuy) ||
-              isError ||
+              isEstimatedError ||
               isMinAmountError ||
               validationError
             }
-            error={isError || isMinAmountError || validationError}
+            error={isEstimatedError || isMinAmountError || validationError}
             errorMessage={validationError ? validationErrorMessage : ''}
           >
             Exchange

@@ -26,7 +26,7 @@ const UiButton: React.FC<UiButtonProps> = ({
       </button>
       {error && (
         <p className='ui-button__error'>
-          {errorMessage ?? defaultErrorMessage}
+          {errorMessage?.length ? errorMessage : defaultErrorMessage}
         </p>
       )}
     </div>
