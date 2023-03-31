@@ -1,26 +1,26 @@
-import React from 'react';
-import { UiFormField, UiSearchDropdown } from '@/shared/ui';
-import { type ICurrency } from '@/models';
-import { UiLoader } from '@/shared/ui/UiLoader';
-import './SearchFormField.scss';
+import React from 'react'
+import { UiFormField, UiSearchDropdown } from '@/shared/ui'
+import { type ICurrency } from '@/models'
+import { UiLoader } from '@/shared/ui/UiLoader'
+import './SearchFormField.scss'
 
 const SearchFormField = ({
-                           chosenCurrency,
-                           currencies,
-                           amountHandler,
-                           searchHandler,
-                           onClick,
-                           error,
-                           amountValue,
-                           searchValue,
-                           loading,
-                           disabled,
-                           lineThrough
-                         }: SearchFormFieldProps): JSX.Element => {
+  chosenCurrency,
+  currencies,
+  amountHandler,
+  searchHandler,
+  onClick,
+  error,
+  amountValue,
+  searchValue,
+  loading,
+  disabled,
+  lineThrough
+}: SearchFormFieldProps): JSX.Element => {
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    let value = e.target.value;
+    const value = e.target.value
     if (amountHandler != null) {
-      amountHandler(e, +value);
+      amountHandler(e, +value)
     }
     //   if (/^[\d,.]*$/.test(value)) {
     //     if (value.includes(',')) {
@@ -28,7 +28,7 @@ const SearchFormField = ({
     //     }
     // }
     // }
-  };
+  }
   return (
     <UiFormField
       type={'number'}
@@ -46,7 +46,7 @@ const SearchFormField = ({
           {loading && loading
             ? (
               <UiLoader />
-            )
+              )
             : (
               <UiSearchDropdown
                 value={searchValue}
@@ -55,31 +55,31 @@ const SearchFormField = ({
                 onClick={onClick}
                 onChange={searchHandler}
               />
-            )}
+              )}
         </>
       }
     />
-  );
-};
+  )
+}
 
 export interface SearchFormFieldProps {
-  chosenCurrency: ICurrency | null;
-  currencies: ICurrency[];
+  chosenCurrency: ICurrency | null
+  currencies: ICurrency[]
   amountHandler?: (
     e: React.ChangeEvent<HTMLInputElement>,
     value: number
-  ) => void;
-  searchHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  ) => void
+  searchHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
 
-  onClick: (e: React.MouseEvent, value: ICurrency) => void;
-  error?: boolean;
-  amountValue?: string;
-  searchValue: string;
+  onClick: (e: React.MouseEvent, value: ICurrency) => void
+  error?: boolean
+  amountValue?: string
+  searchValue: string
 
-  loading?: boolean;
+  loading?: boolean
 
-  disabled?: boolean;
-  lineThrough?: boolean;
+  disabled?: boolean
+  lineThrough?: boolean
 }
 
-export default SearchFormField;
+export default SearchFormField
