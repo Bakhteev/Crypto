@@ -1,0 +1,13 @@
+@import '@/styles/variables';
+
+.line-through {
+  &::before {
+    position: absolute;
+    content: "";
+    width: 100px;
+    height: 1px;
+    background: $textColor;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
