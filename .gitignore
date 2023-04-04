@@ -25,4 +25,5 @@ dist-ssr
 
 /build
 /storybook-static
+.env
 
